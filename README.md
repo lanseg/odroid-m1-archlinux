@@ -7,7 +7,7 @@ yourself.
 
 ## TD;DR
 ```bash
-./uboot/build.sh
+cd uboot && build.sh
 
 # Here will be script that creates an image ready for writing on the flash drive
 ```
