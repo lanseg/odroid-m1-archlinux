@@ -6,30 +6,6 @@ yourself.
 # Creating an image
 
 ## TD;DR
-```bash
-cd uboot && build.sh
+Just run ```bash build.sh``` to get a device-ready image with the latest ARM64 Arch linux and u-boot
+and then write it to any flash drive.
 
-# Here will be script that creates an image ready for writing on the flash drive
-```
-
-## Detailed steps
-
-### Image layout
-
-### Building a system
-
-*// TODO: Building u-boot*
-
-*// TODO: Getting kernel and system*
-
-### Troubleshooting
-
-*// TODO: importance of a proper UART cable, not all of them support 1500000 baud*
-
-*// TODO: importance of a proper DTB file*
-
-*// TODO: importance of a proper DTB file*
-
-## ROOT on NVME
-
-*// TODO: boot from sdcard, but keep root on NVME*
