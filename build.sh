@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -uo pipefail
 source ./settings
 
 imageName="linux.img"
@@ -15,13 +15,13 @@ cd ..
 if [ ! -f "$imageName" ]
 then
     echo "Creating an empty image file: $imageName"
-    dd if=/dev/zero of=linux.img bs=16M count=512 status=progress
+    dd if=/dev/zero of=linux.img bs=16M count=255 status=progress
 fi
 
 sudo losetup -P -f ./linux.img
 loopDevice="` losetup | grep $PWD/linux.img | cut -d" " -f1 `"
 
-echo $loopDevice
+echo "Attached future image to $loopDevice"
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
     # Create u-boot partition
     n
@@ -33,7 +33,7 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
     n
     2
           # default, start immediately after
-    +128M  # For fernel, initrd and boot script
+    +512M  # For fernel, initrd and boot script
 
     # Create root partition
     n
@@ -41,7 +41,10 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
     # default, start immediately after
     # default, to the end of the disk
     
-    # Set UUIDs
+    # Set names and UUIDs
+    c
+    1
+    uboot
     x
     c
     2
@@ -52,16 +55,21 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
     w
     Y
 EOF
+echo "Formatting ext2 on boot partition (${loopDevice}p2)"
 sudo mkfs.ext2 "${loopDevice}p2"
+echo "Formatting ext4 on root partition (${loopDevice}p3)" 
 sudo mkfs.ext4 "${loopDevice}p3"
+echo "Writing uboot to the uboot partition ${loopDevice}p1"
 sudo dd if=uboot/u-boot/u-boot.bin of="${loopDevice}p1" status=progress
 
+echo "Copying linux files to the image"
 mkdir -p root
 sudo mount "${loopDevice}p3" root
 sudo mkdir -p root/boot
 sudo mount "${loopDevice}p2" root/boot
-sudo cp -prfv archlinux/root/* root/
+sudo cp -prf archlinux/root/* root/
 
+echo "Unmounting folders and detaching $loopDevice"
 sudo umount root/boot
 sudo umount root
 sudo losetup -d $loopDevice

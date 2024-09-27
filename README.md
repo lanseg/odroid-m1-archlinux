@@ -3,6 +3,9 @@ I had problems with running modern linux on my Odroid M1 device. Builds from Har
 bluetooth dongle, while others were showing only black screen and empty UART output. So, if you want something done, do it
 yourself.
 
+# Used sources
+
+
 # Creating an image
 
 ## TD;DR

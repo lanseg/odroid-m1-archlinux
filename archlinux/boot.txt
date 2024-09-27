@@ -2,7 +2,7 @@ setenv bootlabel "Arch Linux for Odroid"
 
 setenv overlay_resize 8192
 setenv board "odroidm1"
-setenv fdtfile "rk3568-odroid-m1.dtb"
+setenv fdtfile "dtbs/rockchip/rk3568-odroid-m1.dtb"
 setenv bootargs "root=UUID=###ROOT_UUID###"
 setenv bootargs "${bootargs} earlycon=uart8250,mmio32,0xfe660000 loglevel=7 "
 setenv bootargs "${bootargs} pci=nomsi initcall_debug systemd.log_level=debug "
