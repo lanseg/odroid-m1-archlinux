@@ -4,11 +4,26 @@ bluetooth dongle, while others were showing only black screen and empty UART out
 yourself.
 
 # Used sources
-
-
+* u-boot
+  * arm-trusted-firmware
+  * rkbin
+* ArchLinuxARM-aarch64
+  
 # Creating an image
 
-## TD;DR
-Just run ```bash build.sh``` to get a device-ready image with the latest ARM64 Arch linux and u-boot
-and then write it to any flash drive.
+### Ubuntu
+```bash
+apt install git sudo curl build-essential bison flex gcc-aarch64-linux-gnu gdisk uboot-tools
+git clone https://github.com/lanseg/odroid-m1-archlinux.git
+cd odroid-m1-archlinux
+./build.sh
+```
+
+### ArchLinux
+```bash
+pacman -Sy python3 python-setuptools swig python-pyelftools curl git sudo gcc make aarch64-linux-gnu-gcc bison flex gdisk uboot-tools
+git clone https://github.com/lanseg/odroid-m1-archlinux.git
+cd odroid-m1-archlinux
+./build.sh
+```
 
