@@ -22,7 +22,7 @@ sudo losetup -P -f ./linux.img
 loopDevice="` losetup | grep $PWD/linux.img | cut -d" " -f1 `"
 
 echo "Attached future image to $loopDevice"
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
+sed -e 's/\s*\([-\-\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
     # Create u-boot partition
     n
     1
@@ -48,10 +48,10 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
     x
     c
     2
-    $BOOT_UUID
+    ${BOOT_UUID}
     c
-    2
-    $ROOT_UUID
+    3
+    ${ROOT_UUID}
     w
     Y
 EOF
