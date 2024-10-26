@@ -57,8 +57,13 @@ sed -e 's/\s*\([-\-\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo gdisk "$loopDevice"
 EOF
 echo "Formatting ext2 on boot partition (${loopDevice}p2)"
 sudo mkfs.ext2 "${loopDevice}p2"
+sudo tune2fs -U $BOOT_UUID "${loopDevice}p2"
+echo "UUID is `sudo blkid ${loopDevice}p2` (expected $BOOT_UUID)"
+
 echo "Formatting ext4 on root partition (${loopDevice}p3)" 
 sudo mkfs.ext4 "${loopDevice}p3"
+sudo tune2fs -U $ROOT_UUID "${loopDevice}p3"
+echo "UUID is `sudo blkid ${loopDevice}p3` (expected $ROOT_UUID)"
 echo "Writing uboot to the uboot partition ${loopDevice}p1"
 sudo dd if=uboot/u-boot/u-boot.bin of="${loopDevice}p1" status=progress
 
